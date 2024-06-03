@@ -14,31 +14,33 @@ export function FirebaseDemo() {
   const [newName, setNewName] = useState('');
   const [newMark, setNewMark] = useState(0);
 
-  const usersCollectionRef = collection(db, 'users');
+  const studentsCollectionRef = collection(db, 'students');
 
-  const [users, usersLoading, usersError] = useCollection(query(usersCollectionRef) as CollectionReference<User>);
+  const [students, studentsLoading, studentsError] = useCollection(
+    query(studentsCollectionRef) as CollectionReference<User>,
+  );
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, { name: newName, mark: Number(newMark) });
+    await addDoc(studentsCollectionRef, { name: newName, mark: Number(newMark) });
   };
 
   const updateUser = async (id: string, mark: number) => {
-    const userDoc = doc(db, 'users', id);
+    const userDoc = doc(db, 'students', id);
     const newFields = { mark: mark + 1 };
     await updateDoc(userDoc, newFields);
   };
 
   const deleteUser = async (id: string) => {
-    const userDoc = doc(db, 'users', id);
+    const userDoc = doc(db, 'students', id);
     await deleteDoc(userDoc);
   };
 
-  if (usersLoading) {
+  if (studentsLoading) {
     return <Spinner />;
   }
 
-  if (usersError) {
-    return <Box>Error fetching users</Box>;
+  if (studentsError) {
+    return <Box>Error fetching students</Box>;
   }
 
   return (
@@ -66,8 +68,8 @@ export function FirebaseDemo() {
         </Button>
       </Flex>
       <Flex gap="4" flexWrap="wrap">
-        {users &&
-          users.docs.map((user) => (
+        {students &&
+          students.docs.map((user) => (
             <Box gap="6" border="1px" borderColor="gray.300" width="20%" px="6" py="8" key={user.id}>
               <Heading>Name: {user.data().name}</Heading>
               <Heading>Mark: {user.data().mark}</Heading>
