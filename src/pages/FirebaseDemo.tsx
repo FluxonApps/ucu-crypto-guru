@@ -10,6 +10,7 @@ interface User {
   name: string;
   mark: number;
 }
+
 export function FirebaseDemo() {
   const [newName, setNewName] = useState('');
   const [newMark, setNewMark] = useState(0);
