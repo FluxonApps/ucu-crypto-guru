@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Input, Stack, Text, useToast } from '@chakra-ui/react';
 import { getAuth } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -8,10 +8,11 @@ import {
   useSignInWithEmailAndPassword,
 } from 'react-firebase-hooks/auth';
 import { Navigate } from 'react-router-dom';
+import logoImage from '../assets/main/token.png';
 
 import { db } from '../../firebase.config.ts';
 
-import MainLayout from './layout/MainLayout.tsx';
+import MainLayout from '../components/layout/MainLayout.tsx';
 
 const auth = getAuth();
 
@@ -64,7 +65,7 @@ const AuthPage = () => {
 
       // Save user to database.
       const userDocRef = doc(db, 'users', res.user.uid);
-      await setDoc(userDocRef, { email });
+      await setDoc(userDocRef, { email, testScores: [] });
 
       toast({ status: 'success', description: 'Successfully signed up!' });
     } catch (e) {
@@ -89,12 +90,26 @@ const AuthPage = () => {
 
   // Check if user is already signed in. If yes, redirect to main app.
   if (user) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/main/blocks" replace />;
   }
 
   return (
     <MainLayout>
-      <Flex w="full" h="full" alignItems="center" justifyContent="space-between">
+      <Flex w="full" h="full" alignItems="center" flexDir="column" justifyContent="center" gap="50px">
+        <Box fontSize="2xl" fontWeight="bold">
+          <Box
+            alignItems="center"
+            justifyContent="center"
+            display="flex"
+            color="white"
+            flexDir="column"
+            mt="-150px"
+            fontSize="40px "
+          >
+            <Image src={logoImage} display="inline-block" boxSize="100px" />
+            CryptoGuru
+          </Box>
+        </Box>
         <Box mx="auto" as="form" onSubmit={handleAuth}>
           <Stack spacing={4} w={500} bg="white" rounded="md" p={8}>
             <Text fontSize="2xl">{showSignIn ? 'Sign in' : 'Sign up'}</Text>
