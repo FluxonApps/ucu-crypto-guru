@@ -9,6 +9,7 @@ import MainLayout from './components/layout/MainLayout.tsx';
 import MainPage from './pages/MainPage.tsx';
 import StatsPage from './pages/StatsPage.tsx';
 import MainStatsLayout from './components/layout/MainStatsLayout.tsx';
+import LessonPage from './pages/LessonPage.tsx';
 
 export const App = () => {
   return (
@@ -21,6 +22,7 @@ export const App = () => {
         <Route path="blocks" element={<MainPage />} />
         <Route path="stats" element={<StatsPage />} />
       </Route>
+      <Route path="/lesson" element={<LessonPage />} />
     </Routes>
   );
 };

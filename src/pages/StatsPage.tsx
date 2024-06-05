@@ -54,7 +54,7 @@ const StatsPage = () => {
         })}
         <Divider my="20px" border="2px solid grey" />
         <Text fontSize="20px" fontWeight="bold" display="flex" gap="10px" alignItems="center">
-          Avarage Score:
+          Average Score:
           <Text color="orange.500" fontSize="30px" mt="-3px">
             {Math.round(userData.testScores.reduce((a, b) => a + b, 0) / userData.testScores.length)}
           </Text>

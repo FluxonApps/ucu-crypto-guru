@@ -54,7 +54,7 @@ const MainPage: React.FC = () => {
             blocksInfo.map((block) => {
               const gsReference = ref(storage, block.imgUrl);
 
-              return (
+              return ( 
                 <Link to={`/block/${block.order}`} key={block.order}>
                   <Box
                     bg="black"
