@@ -4,6 +4,7 @@ import { db } from '../../firebase.config';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { useEffect } from 'react';
 
 const MainPage: React.FC = () => {
   interface Block {
@@ -16,23 +17,27 @@ const MainPage: React.FC = () => {
     tests: object;
   }
 
-  // async function getImageURL(gsUrl: string) {
-  //   try {
-  //     const url = await getDownloadURL(gsUrl);
-  //     return url;
-  //   } catch (error) {
-  //     console.error('Error fetching image URL:', error);
+  // useEffect(() => {
+  //   async function getImageURL() {
+  //     try {
+  //       const gsReference = ref(
+  //         storage,
+  //         'gs://crypto-guru-ed9c7.appspot.com/block cover/photo-1639322537228-f710d846310a.avif',
+  //       );
+  //       const url = await getDownloadURL(gsReference);
+  //       console.log(url);
+  //       return url;
+  //     } catch (error) {
+  //       console.error('Error fetching image URL:', error);
+  //     }
   //   }
-  // }
+
+  //   getImageURL();
+  // });
 
   const blocksCollectionRef = collection(db, 'blocks');
   const [blocks, blcoksLoading, blocksError] = useCollection(query(blocksCollectionRef) as CollectionReference<Block>);
   const blocksInfo: Array<object> = [];
-  const storage = getStorage();
-  const gsReference = ref(
-    storage,
-    'gs://crypto-guru-ed9c7.appspot.com/block cover/photo-1519162584292-56dfc9eb5db4.avif',
-  );
 
   if (blocks) {
     blocks?.docs.forEach((element) => {
@@ -52,16 +57,14 @@ const MainPage: React.FC = () => {
         <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} gap={6} spacing={10}>
           {blocksInfo &&
             blocksInfo.map((block) => {
-              const gsReference = ref(storage, block.imgUrl);
-
-              return ( 
+              return (
                 <Link to={`/block/${block.order}`} key={block.order}>
                   <Box
                     bg="black"
                     p="4"
                     borderRadius="md"
-                    backgroundImage={`url(https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`}
-                    backgroundSize="600px"
+                    backgroundImage={`url(${block.imgUrl})`}
+                    backgroundSize="cover"
                     backgroundRepeat="no-repeat"
                     height="300px"
                     rounded="40"
