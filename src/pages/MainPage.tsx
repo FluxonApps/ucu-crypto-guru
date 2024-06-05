@@ -38,7 +38,7 @@ const MainPage: React.FC = () => {
 
   const blocksCollectionRef = collection(db, 'blocks');
   const [blocks, blcoksLoading, blocksError] = useCollection(query(blocksCollectionRef) as CollectionReference<Block>);
-  const blocksInfo: Array<object> = [];
+  const blocksInfo: Array<Block> = [];
 
   if (blocks) {
     blocks?.docs.forEach((element) => {
