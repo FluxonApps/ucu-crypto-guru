@@ -8,7 +8,8 @@ import FirebaseDemo from './components/FirebaseDemo.tsx';
 import MainLayout from './components/layout/MainLayout.tsx';
 
 import BlockPage from './components/BlockPage.tsx';
-import LessonPart from './components/LessonPart.tsx'
+import LessonBlock from './components/LessonBlock.tsx';
+import QuestionBlock from './components/QuestionBlock.tsx';
 
 export const App = () => {
   return (
@@ -18,7 +19,8 @@ export const App = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/blocks/:id" element={<BlockPage />}>
-          <Route path="lesson/:part" element={<LessonPart />} />
+          <Route path="lessons/:lesson_id" element={<LessonBlock />} />
+          <Route path="quest" element={<QuestionBlock />} />
         </Route>
       </Routes>
   );
