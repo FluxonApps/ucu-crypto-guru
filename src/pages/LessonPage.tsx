@@ -87,7 +87,7 @@ const LessonPage = () => {
               Lessons
             </Text>
             <Box display="flex" flexDir="column" gap="30px">
-              {lessons.map((element, index) => {
+              {lessons.map((element) => {
                 return (
                   <Box display="flex" alignItems="center">
                     <Box mr="10px">
