@@ -26,7 +26,7 @@ export const App = () => {
           <Route path="blocks" element={<MainPage />} />
           <Route path="stats" element={<StatsPage />} />
         </Route>
-        <Route path="/blocks/:id" element={<BlockPage />}>
+        <Route path="/blocks/:id" element={<MainStatsLayout />}>
           <Route path="lessons/:lesson_id" element={<LessonBlock />} />
           <Route path="quest" element={<QuestionBlock />} />
         </Route>

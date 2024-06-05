@@ -38,6 +38,7 @@ const BlockPage = () => {
     );
   } else {
     return (
+      
       <Template>
         <Flex direction={{ base: 'column', md: 'row' }}>
           <Box flex="1" p={3}>

@@ -18,24 +18,6 @@ const MainPage: React.FC = () => {
     order: number;
   }
 
-  // useEffect(() => {
-  //   async function getImageURL() {
-  //     try {
-  //       const gsReference = ref(
-  //         storage,
-  //         'gs://crypto-guru-ed9c7.appspot.com/block cover/photo-1639322537228-f710d846310a.avif',
-  //       );
-  //       const url = await getDownloadURL(gsReference);
-  //       console.log(url);
-  //       return url;
-  //     } catch (error) {
-  //       console.error('Error fetching image URL:', error);
-  //     }
-  //   }
-
-  //   getImageURL();
-  // });
-
   const blocksCollectionRef = collection(db, 'blocks');
   const [blocks, blcoksLoading, blocksError] = useCollection(query(blocksCollectionRef) as CollectionReference<Block>);
   const blocksInfo: Array<Block> = [];
