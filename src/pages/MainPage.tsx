@@ -15,6 +15,7 @@ const MainPage: React.FC = () => {
     imgUrl: string;
     lessons: object;
     tests: object;
+    order: number;
   }
 
   // useEffect(() => {
