@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import fluxonLogo from './assets/fluxon-logo.svg';
 import AuthPage from './pages/AuthPage.tsx';
 import DashboardPage from './pages/DashboardPage.tsx';
-import FirebaseDemo from './pages/FirebaseDemo.tsx';
+import FirebaseDemo from './components/FirebaseDemo.tsx';
 import MainLayout from './components/layout/MainLayout.tsx';
 import MainPage from './pages/MainPage.tsx';
 import StatsPage from './pages/StatsPage.tsx';
