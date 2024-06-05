@@ -1,5 +1,5 @@
 import { HStack, Img, Link, Stack, Text } from '@chakra-ui/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 
 import fluxonLogo from './assets/fluxon-logo.svg';
 import AuthPage from './components/AuthPage.tsx';
@@ -7,14 +7,20 @@ import DashboardPage from './components/DashboardPage.tsx';
 import FirebaseDemo from './components/FirebaseDemo.tsx';
 import MainLayout from './components/layout/MainLayout.tsx';
 
+import BlockPage from './components/BlockPage.tsx';
+import LessonPart from './components/LessonPart.tsx'
+
 export const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<EventPage />} />
-      <Route path="/firebase-demo" element={<FirebaseDemo />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<EventPage />} />
+        <Route path="/firebase-demo" element={<FirebaseDemo />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/blocks/:id" element={<BlockPage />}>
+          <Route path="lesson/:part" element={<LessonPart />} />
+        </Route>
+      </Routes>
   );
 };
 
@@ -30,6 +36,7 @@ const EventPage = () => {
           <Link href="/firebase-demo">Firebase demo</Link>
           <Text>|</Text>
           <Link href="/auth">Authenticate</Link>
+          <Link href="/blocks/help">Help</Link>
         </HStack>
       </Stack>
     </MainLayout>
