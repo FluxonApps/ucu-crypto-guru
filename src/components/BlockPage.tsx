@@ -39,36 +39,63 @@ const BlockPage = () => {
   } else {
     return (
       <Template>
-        <Flex direction={{ base: 'column', md: 'row' }}>
-          <Box flex="1" p={3}>
-            <Box px={10}>
+        <Flex  direction={{ base: 'column', md: 'row' }}>
+          <Box  flex="1" p={3}>
+            <Box px={20}>
               <Heading paddingBottom={5}>{block.name} - {block.description}</Heading>
             </Box>
-            <Box>
-              <Outlet />
-            </Box>
+          
+            <Outlet />
+            
           </Box>
-          <Box flexShrink={0} flexBasis={{ base: '100%', md: '450px' }} marginLeft={{ base: 0, md: 30 }}>
-            {lessons?.docs.map((lesson) => (
-              <Link key={lesson.id} href={`/blocks/${id}/lessons/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
-                <Box display={'flex'} flexDirection={'row'} marginTop={3} marginBottom={3}>
-                  <IconButton
-                    size="sm"
-                    colorScheme='orange'
-                    aria-label='stats'
-                    icon={<BsShareFill />}
-                    margin={1}
-                    boxSize="50px"
-                  />
-                  <Box display={'flex'} flexDirection={'column'}>
-                    <Heading paddingTop={2} paddingLeft={30} size='md'>{lesson.data().title}</Heading>
-                    <Text paddingLeft={30} size='md' color={'grey'}>a bit of text</Text>
+          
+          <Box marginLeft={{ base: 0, md: 30 }} width={400} display={'flex'} flexDirection={'column'}>
+            <Heading>Lessons</Heading>
+            <Box flexShrink={0} flexBasis={{ base: '100%', md: '450px' }} 
+                overflow="auto" p={6} 
+                maxW="container.md" mx="auto" 
+                height="50svh"
+
+                css={{
+                  '&::-webkit-scrollbar': {
+                    width: '8px',
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    background: '#e0e0e0',
+                    borderRadius: '10px',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: '#888',
+                    borderRadius: '10px',
+                    border: '2px solid #e0e0e0',
+                  },
+                  'scrollbar-width': 'thin',
+                  'scrollbar-color': '#EEA58B #F3F3F3',
+                }}
+                // backgroundColor='Yellow'
+                >
+              
+              {lessons?.docs.map((lesson) => (
+                <Link key={lesson.id} href={`/blocks/${id}/lessons/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
+                  <Box display={'flex'} flexDirection={'row'} marginTop={3} marginBottom={3}>
+                    <IconButton
+                      size="sm"
+                      colorScheme='orange'
+                      aria-label='stats'
+                      icon={<BsShareFill />}
+                      margin={1}
+                      boxSize="50px"
+                    />
+                    <Box display={'flex'} flexDirection={'column'}>
+                      <Heading paddingTop={2} paddingLeft={30} size='md'>{lesson.data().title}</Heading>
+                      <Text paddingLeft={30} size='md' color={'grey'}>a bit of text</Text>
+                    </Box>
                   </Box>
-                </Box>
-                <Divider />
-              </Link>
-            ))}
-          </Box>
+                  <Divider />
+                </Link>
+              ))}
+            </Box>
+            </Box>
         </Flex>
       </Template>
     );

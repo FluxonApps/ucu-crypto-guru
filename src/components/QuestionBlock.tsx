@@ -27,7 +27,32 @@ const QuestionBlock: React.FC = () => {
   };
 
   return (
-    <Box p={6} maxW="container.md" mx="auto">
+    <Box
+      className="custom-scrollbar" // Add this class
+      bgColor="#F3F3F3"
+      borderRadius={30}
+      overflow="auto"
+      p={6}
+      maxW="container.md"
+      mx="auto"
+      height="50vh"
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: '#e0e0e0',
+          borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#888',
+          borderRadius: '10px',
+          border: '2px solid #e0e0e0',
+        },
+        'scrollbar-width': 'thin',
+        'scrollbar-color': '#EEA58B #F3F3F3',
+      }}
+    >
       <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold">
         Quiz - Title of the block
       </Text>
