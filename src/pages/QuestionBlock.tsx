@@ -71,10 +71,36 @@ const QuestionBlock: React.FC = () => {
   };
 
   return (
-    <Box p={6} maxW="container.md" mx="auto">
-      <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold">
-        Quiz
-      </Text>
+    <>
+    <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold" mx = {8} my = {5}>
+      Quiz
+    </Text>
+    <Box
+      className="custom-scrollbar" // Add this class
+      bgColor="#F3F3F3"
+      borderRadius={30}
+      overflow="auto"
+      p={6}
+      maxW="container.md"
+      mx="auto"
+      height="50vh"
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: '#e0e0e0',
+          borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#888',
+          borderRadius: '10px',
+          border: '2px solid #e0e0e0',
+        },
+        'scrollbar-width': 'thin',
+        'scrollbar-color': '#EEA58B #F3F3F3',
+      }}
+    >
       {questions.map((question) => (
         <Box key={question.id} p={4} my={4} borderWidth="1px" borderRadius="lg" backgroundColor='#FCCFBF'>
           <Text fontWeight='bold'>{question.question}</Text>
@@ -89,10 +115,11 @@ const QuestionBlock: React.FC = () => {
           </RadioGroup>
         </Box>
       ))}
-      <Button colorScheme="orange" onClick={handleSubmit}>
+      </Box>
+      <Button colorScheme="orange" onClick={handleSubmit} m = {8}>
         Submit
       </Button>
-    </Box>
+    </>
   );
 };
 
