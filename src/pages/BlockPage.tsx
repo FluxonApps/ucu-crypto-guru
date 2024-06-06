@@ -86,20 +86,26 @@ const BlockPage = () => {
                 >
               {lessons?.docs.map((lesson) => (
                 <Link key={lesson.id} href={`/block/${id}/lesson/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
-                  <Box display={'flex'} flexDirection={'row'} marginTop={3} marginBottom={3}>
+                  <Box display="flex" flexDirection="row" alignItems="center" width="100%">
                     <IconButton
-                      size="sm"
-                      colorScheme='orange'
-                      aria-label='stats'
+                      size="md"
+                      colorScheme="orange"
+                      aria-label="stats"
                       icon={<BsShareFill />}
-                      margin={1}
-                      boxSize="50px"
+                      marginRight={2}
+                      m={5}
+                      width="60px"
+                      height="70px"
                     />
-                    <Box display={'flex'} flexDirection={'column'}>
-                      <Heading paddingTop={2} paddingLeft={30} size='md'>{lesson.data().title}</Heading>
-                      <Text paddingLeft={30} size='md' color={'grey'}>a bit of text</Text>
+                    <Box display="flex" flexDirection="column" flex="1">
+                      <Heading size="md" overflowWrap="break-word" whiteSpace="normal">
+                        {lesson.data().title}
+                      </Heading>
+                      <Text size="sm" color="gray" overflowWrap="break-word" whiteSpace="normal">
+                        a bit of text
+                      </Text>
                     </Box>
-                </Box>
+                  </Box>
                 <Divider />
               </Link>
             ))}
