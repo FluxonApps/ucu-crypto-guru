@@ -89,7 +89,7 @@ const MainPage: React.FC = () => {
                     </Box>
                     <Box p="5" backdropFilter="blur(10px)">
                       <Text fontSize="md" fontWeight="bold">
-                        Learning the basics of blockchain in N lessons
+                        {block.data().description}
                       </Text>
                     </Box>
                   </Box>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Radio, RadioGroup, Stack, Text, useToast } from '@chakra-ui/react';
 import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -18,8 +18,9 @@ const QuestionBlock: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [score, setScore] = useState<number | null>(null);
+  const [percentage, setPercentage] = useState<number | null>(null);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -44,79 +45,90 @@ const QuestionBlock: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    // Calculate the score
-    let score = 0;
+    // Calculate the percentage
+    let correctAnswers = 0;
     questions.forEach((question) => {
-      if ((answers[question.id] === 'True' && question.correct_answer) || (answers[question.id] === 'False' && !question.correct_answer)) {
-        score++;
+      if (
+        (answers[question.id] === 'True' && question.correct_answer) ||
+        (answers[question.id] === 'False' && !question.correct_answer)
+      ) {
+        correctAnswers++;
       }
     });
-    setScore(score);
+
+    const totalQuestions = questions.length;
+    const percentage = (correctAnswers / totalQuestions) * 100;
+    setPercentage(percentage);
 
     // Update the user's marks in Firestore
     if (user) {
       const userDocRef = doc(db, 'users', user.uid);
       await updateDoc(userDocRef, {
-        [`testScores.${id}`]: score,
+        [`testScores.${id}`]: percentage,
       });
     }
 
     toast({
       title: 'Quiz Submitted',
-      description: `Your score: ${score}/${questions.length}`,
+      description: `Your score: ${percentage.toFixed(2)}%`,
       status: 'success',
       duration: 5000,
       isClosable: true,
     });
+
+    // Redirect to the stats page after the toast
+    setTimeout(() => {
+      navigate('/block/' + id + '/stats');
+    }, 1000);
   };
 
   return (
     <>
-    <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold" mx = {8} my = {5}>
-      Quiz
-    </Text>
-    <Box
-      className="custom-scrollbar" // Add this class
-      bgColor="#F3F3F3"
-      borderRadius={30}
-      overflow="auto"
-      p={6}
-      maxW="container.md"
-      mx="auto"
-      height="50vh"
-      css={{
-        '&::-webkit-scrollbar': {
-          width: '8px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: '#e0e0e0',
-          borderRadius: '10px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: '#888',
-          borderRadius: '10px',
-          border: '2px solid #e0e0e0',
-        },
-        'scrollbar-width': 'thin',
-        'scrollbar-color': '#EEA58B #F3F3F3',
-      }}
-    >
-      {questions.map((question) => (
-        <Box key={question.id} p={4} my={4} borderWidth="1px" borderRadius="lg" backgroundColor='#FCCFBF'>
-          <Text fontWeight='bold'>{question.question}</Text>
-          <RadioGroup
-            onChange={(value) => handleAnswerChange(question.id, value)}
-            value={answers[question.id] || ''}
-          >
-            <Stack direction="row">
-              <Radio value="True">True</Radio>
-              <Radio value="False">False</Radio>
-            </Stack>
-          </RadioGroup>
-        </Box>
-      ))}
+      <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold" mx={8} my={5}>
+        Quiz
+      </Text>
+      <Box
+        className="custom-scrollbar" // Add this class
+        bgColor="#F3F3F3"
+        borderRadius={30}
+        overflow="auto"
+        p={6}
+        maxW="container.md"
+        mx="auto"
+        height="50vh"
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#e0e0e0',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#888',
+            borderRadius: '10px',
+            border: '2px solid #e0e0e0',
+          },
+          'scrollbar-width': 'thin',
+          'scrollbar-color': '#EEA58B #F3F3F3',
+        }}
+      >
+        {questions.map((question) => (
+          <Box key={question.id} p={4} my={4} borderWidth="1px" borderRadius="lg" backgroundColor='#FCCFBF'>
+            <Text fontWeight='bold'>{question.question}</Text>
+            <RadioGroup
+              onChange={(value) => handleAnswerChange(question.id, value)}
+              value={answers[question.id] || ''}
+            >
+              <Stack direction="row">
+                <Radio value="True">True</Radio>
+                <Radio value="False">False</Radio>
+              </Stack>
+            </RadioGroup>
+          </Box>
+        ))}
       </Box>
-      <Button colorScheme="orange" onClick={handleSubmit} m = {8}>
+      <Button colorScheme="orange" onClick={handleSubmit} m={8}>
         Submit
       </Button>
     </>

@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAuth } from 'firebase/auth';
+import { Text } from '@chakra-ui/react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useParams } from 'react-router-dom';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
-interface CongratsProps {
-  score: number;
-  correct: number;
-  incorrect: number;
-}
+const db = getFirestore();
 
-const Congrats: React.FC<CongratsProps> = ({ score, correct, incorrect }) => {
+const CongratsBlock: React.FC = () => {
+  const [user] = useAuthState(getAuth());
+  const { id } = useParams<{ id: string }>();
+  const [score, setScore] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchScore = async () => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        const userData = userDoc.data();
+        if (userData && userData.testScores && userData.testScores[id]) {
+          setScore(userData.testScores[id]);
+        }
+      }
+    };
+
+    fetchScore();
+  }, [user, id]);
+
+  if (score === null) {
+    return <div>Loading...</div>;
+  }
+
+  const totalQuestions = 100; // This should be dynamically set based on your actual total questions
+  const correct = Math.round((score / 100) * totalQuestions);
+  const incorrect = totalQuestions - correct;
+
   const containerStyle = {
     textAlign: 'center' as const,
     marginBottom: '20px',
@@ -63,7 +91,7 @@ const Congrats: React.FC<CongratsProps> = ({ score, correct, incorrect }) => {
 
   return (
     <div style={containerStyle}>
-      <h2>Congratulations! You've completed the &lt;name of the block&gt; block!</h2>
+      <Text fontSize="md" mb={4}>Congratulations! You've completed the &lt;name of the block&gt; block!</Text>
       <p>Your score:</p>
       <div style={scoreBarStyle}>
         <div style={scoreFillStyle}>
@@ -78,4 +106,4 @@ const Congrats: React.FC<CongratsProps> = ({ score, correct, incorrect }) => {
   );
 };
 
-export default Congrats;
+export default CongratsBlock;
