@@ -1,10 +1,11 @@
-import { Box, Text, SimpleGrid, Container } from '@chakra-ui/react';
-import { collection, CollectionReference, query } from 'firebase/firestore';
+import { Box, Text, SimpleGrid, Container, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
+import { collection, CollectionReference, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { useEffect } from 'react';
+import { SearchIcon } from '@chakra-ui/icons';
 
 const MainPage: React.FC = () => {
   interface Block {
@@ -18,53 +19,47 @@ const MainPage: React.FC = () => {
     order: number;
   }
 
-  // useEffect(() => {
-  //   async function getImageURL() {
-  //     try {
-  //       const gsReference = ref(
-  //         storage,
-  //         'gs://crypto-guru-ed9c7.appspot.com/block cover/photo-1639322537228-f710d846310a.avif',
-  //       );
-  //       const url = await getDownloadURL(gsReference);
-  //       console.log(url);
-  //       return url;
-  //     } catch (error) {
-  //       console.error('Error fetching image URL:', error);
-  //     }
-  //   }
-
-  //   getImageURL();
-  // });
-
   const blocksCollectionRef = collection(db, 'blocks');
-  const [blocks, blcoksLoading, blocksError] = useCollection(query(blocksCollectionRef) as CollectionReference<Block>);
-  const blocksInfo: Array<Block> = [];
-
-  if (blocks) {
-    blocks?.docs.forEach((element) => {
-      blocksInfo.push(element.data());
-    });
-
-    blocksInfo.sort((a, b) => a.order - b.order);
-  }
+  const [blocks, blcoksLoading, blocksError] = useCollection(
+    query(blocksCollectionRef, orderBy('order')) as CollectionReference<Block>,
+  );
 
   return (
     <Box>
+      <Box display="flex" justifyContent="center">
+        <InputGroup width="100" display="flex" alignItems="center">
+          <InputLeftElement pointerEvents="none" height="50px">
+            <SearchIcon height="50px" w="20px" color="gray.500" />
+          </InputLeftElement>
+
+          <Input
+            placeholder="Search..."
+            bg="#F6F6F5"
+            color="black"
+            mb="8"
+            width="50vw"
+            rounded="10"
+            h="50px"
+            fontSize="20px"
+          />
+        </InputGroup>
+      </Box>
+
       <Text fontSize="3xl" mb="4" color="black" fontWeight="bold">
         Blocks
       </Text>
 
       <Box overflow="auto" height="70vh">
         <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} gap={6} spacing={10}>
-          {blocksInfo &&
-            blocksInfo.map((block) => {
+          {blocks?.docs &&
+            blocks.docs.map((block) => {
               return (
-                <Link to={`/block/${block.order}`} key={block.order}>
+                <Link to={`/block/${block.id}`} key={block.data().order}>
                   <Box
                     bg="black"
                     p="4"
                     borderRadius="md"
-                    backgroundImage={`url(${block.imgUrl})`}
+                    backgroundImage={`url(${block.data().imgUrl})`}
                     backgroundSize="cover"
                     backgroundRepeat="no-repeat"
                     height="300px"
@@ -76,7 +71,7 @@ const MainPage: React.FC = () => {
                   >
                     <Box display="flex" justifyContent="space-between" pr="2" pl="2">
                       <Text mt="2" fontSize="30px" fontFamily="monospace">
-                        {block.name}
+                        {block.data().name}
                       </Text>
                       <Box
                         bg="orange.500"
@@ -89,7 +84,7 @@ const MainPage: React.FC = () => {
                         alignItems="center"
                         fontWeight="bold"
                       >
-                        {block.minutes} min
+                        {block.data().minutes} min
                       </Box>
                     </Box>
                     <Box p="5" backdropFilter="blur(10px)">

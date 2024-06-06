@@ -65,7 +65,7 @@ const AuthPage = () => {
 
       // Save user to database.
       const userDocRef = doc(db, 'users', res.user.uid);
-      await setDoc(userDocRef, { email, testScores: [] });
+      await setDoc(userDocRef, { email, testScores: {} });
 
       toast({ status: 'success', description: 'Successfully signed up!' });
     } catch (e) {

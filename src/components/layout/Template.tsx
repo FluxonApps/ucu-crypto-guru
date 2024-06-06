@@ -1,5 +1,5 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Box, Image, Input, InputGroup, InputLeftElement, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Image, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
 import { Link, Outlet } from 'react-router-dom';
 import logoImage from '../../assets/main/token.png';
 import blocksImage from '../../assets/main/blocks.png';
@@ -7,19 +7,15 @@ import statsImage from '../../assets/main/stats.png';
 import { FC } from 'react';
 
 const Template: FC<any> = ({ children }) => (
-  <Box overflow="auto" bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="100vh" padding="4">
+  <Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="vh" overflow="auto">
+    <Box padding="4" maxWidth="1450px" margin="0 auto">
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        marginLeft="10"
-        marginRight="20"
-        maxWidth="1450px"
-        margin="0 auto"
-        mt="20px"
-        mb="30px"
+        mx="10"
+        my="20px"
         color="white"
-        
       >
         <Box fontSize="2xl" fontWeight="bold">
           <Box alignItems="center" justifyContent="center" display="flex">
@@ -60,33 +56,28 @@ const Template: FC<any> = ({ children }) => (
         </Box>
       </Box>
 
-      <Box height="80vh" bgColor={'white'} p="10" rounded="40" maxWidth="1500px" margin="0 auto">
-        <Box display="flex" justifyContent="center">
-          <InputGroup width="100" display="flex" alignItems="center">
+      <Box bgColor="white" p="10" rounded="40" minH="80vh" overflowY="auto">
+        <Box display="flex" justifyContent="center" mb="8">
+          <InputGroup width="50vw">
             <InputLeftElement pointerEvents="none" height="50px">
               <SearchIcon height="50px" w="20px" color="gray.500" />
             </InputLeftElement>
-
             <Input
               placeholder="Search..."
               bg="#F6F6F5"
               color="black"
-              mb="8"
-              width="50vw"
               rounded="10"
               h="50px"
               fontSize="20px"
             />
           </InputGroup>
         </Box>
-        <Box >
+        <Box>
           {children}
         </Box>
-          
-        
-        
       </Box>
     </Box>
+  </Box>
 );
 
 export default Template;
