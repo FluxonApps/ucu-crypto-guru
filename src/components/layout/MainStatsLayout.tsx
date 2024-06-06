@@ -59,25 +59,6 @@ const MainStatsLayout = () => {
       </Box>
 
       <Box background="#ffffff" height="85vh" p="10" rounded="40" maxWidth="1500px" margin="0 auto">
-        <Box display="flex" justifyContent="center">
-          <InputGroup width="100" display="flex" alignItems="center">
-            <InputLeftElement pointerEvents="none" height="50px">
-              <SearchIcon height="50px" w="20px" color="gray.500" />
-            </InputLeftElement>
-
-            <Input
-              placeholder="Search..."
-              bg="#F6F6F5"
-              color="black"
-              mb="8"
-              width="50vw"
-              rounded="10"
-              h="50px"
-              fontSize="20px"
-            />
-          </InputGroup>
-        </Box>
-
         <Outlet />
       </Box>
     </Box>
