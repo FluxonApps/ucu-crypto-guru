@@ -77,6 +77,7 @@ const MainStatsLayout = () => {
             />
           </InputGroup>
         </Box>
+
         <Outlet />
       </Box>
     </Box>

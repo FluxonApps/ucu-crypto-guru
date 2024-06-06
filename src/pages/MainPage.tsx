@@ -1,10 +1,12 @@
-import { Box, Text, SimpleGrid, Container } from '@chakra-ui/react';
+import { Box, Text, SimpleGrid, Container, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { collection, CollectionReference, query } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { useEffect } from 'react';
+import { SearchIcon } from '@chakra-ui/icons';
+
 
 const MainPage: React.FC = () => {
   interface Block {
@@ -50,6 +52,25 @@ const MainPage: React.FC = () => {
 
   return (
     <Box>
+      <Box display="flex" justifyContent="center">
+        <InputGroup width="100" display="flex" alignItems="center">
+          <InputLeftElement pointerEvents="none" height="50px">
+            <SearchIcon height="50px" w="20px" color="gray.500" />
+          </InputLeftElement>
+
+          <Input
+            placeholder="Search..."
+            bg="#F6F6F5"
+            color="black"
+            mb="8"
+            width="50vw"
+            rounded="10"
+            h="50px"
+            fontSize="20px"
+          />
+        </InputGroup>
+      </Box>
+
       <Text fontSize="3xl" mb="4" color="black" fontWeight="bold">
         Blocks
       </Text>
