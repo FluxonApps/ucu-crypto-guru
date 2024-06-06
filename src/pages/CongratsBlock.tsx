@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Text, Button } from '@chakra-ui/react';
+import { Link, useParams } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-import { Text } from '@chakra-ui/react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useParams } from 'react-router-dom';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const db = getFirestore();
@@ -54,7 +54,7 @@ const CongratsBlock: React.FC = () => {
 
   const scoreFillStyle = {
     height: '100%',
-    backgroundColor: '#76c7c0',
+    backgroundColor: '#50C878',
     borderRadius: '12px',
     position: 'relative' as const,
     display: 'flex',
@@ -91,17 +91,26 @@ const CongratsBlock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <Text fontSize="md" mb={4}>Congratulations! You've completed the &lt;name of the block&gt; block!</Text>
-      <p>Your score:</p>
+      <Text fontSize="md" mb={4} fontWeight={'semibold'}>
+        Congratulations! You've completed the block quiz!
+      </Text>
+      <Text fontWeight={'semibold'}>Your score:</Text>
       <div style={scoreBarStyle}>
         <div style={scoreFillStyle}>
           <span style={scorePercentageStyle}>{score}%</span>
         </div>
       </div>
       <div style={answersSummaryStyle}>
-        <p>Correct: <span style={correctStyle}>{correct}</span></p>
-        <p>Incorrect: <span style={incorrectStyle}>{incorrect}</span></p>
+        <Text fontWeight={'semibold'}>
+          Correct: <span style={correctStyle}>{correct}</span>
+        </Text>
+        <Text fontWeight={'semibold'}>
+          Incorrect: <span style={incorrectStyle}>{incorrect}</span>
+        </Text>
       </div>
+      <Button as={Link} to="/main/blocks" colorScheme="orange" mt={4}>
+        Back to blocks
+      </Button>
     </div>
   );
 };

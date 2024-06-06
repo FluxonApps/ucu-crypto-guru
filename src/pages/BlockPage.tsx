@@ -52,7 +52,7 @@ const BlockPage = () => {
   } else {
     return (
       <Template>
-        <Flex direction={{ base: 'column', md: 'row' }} height="100vh" overflow="auto">
+        <Flex direction={{ base: 'column', md: 'row' }} height="100vh">
           <Box flex="1" p={3}>
             <Box px={20}>
               <Heading paddingBottom={5}>{block.name} - {block.description}</Heading>
