@@ -1,17 +1,19 @@
 import { Divider, Box, Button, Spinner, Text, Flex, Heading } from '@chakra-ui/react';
-import { doc, getDoc, getFirestore, query, CollectionReference, collection } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, query, CollectionReference, collection, orderBy } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { useParams, Outlet } from 'react-router-dom';
-import Template from './layout/Template.tsx';
+import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import Template from '../components/layout/Template.tsx';
 import { Link, IconButton } from '@chakra-ui/react';
 import { BsShareFill } from "react-icons/bs";
 
 const db = getFirestore();
 
 const BlockPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, lesson_id } = useParams<{ id: string, lesson_id?: string }>();
   const [block, setBlock] = useState<any>(null);
+  const [isLastLesson, setIsLastLesson] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlock = async () => {
@@ -25,8 +27,19 @@ const BlockPage = () => {
 
   const lessonsRef = collection(db, "blocks", id, "lessons");
   const [lessons] = useCollection(
-    query(lessonsRef) as CollectionReference,
+    query(lessonsRef, orderBy('order')) as CollectionReference,
   );
+
+  useEffect(() => {
+    if (lessons && lessons.docs.length > 0 && lesson_id) {
+      const lastLessonId = lessons.docs[lessons.docs.length - 1].id;
+      setIsLastLesson(lesson_id === lastLessonId);
+    }
+  }, [lessons, lesson_id]);
+
+  const handleGrayButtonClick = () => {
+    window.alert('Please, finish all lessons before proceeding to the test!');
+  };
 
   if (!block) {
     return (
@@ -39,18 +52,18 @@ const BlockPage = () => {
   } else {
     return (
       <Template>
-        <Flex direction={{ base: 'column', md: 'row' }}>
+        <Flex direction={{ base: 'column', md: 'row' }} height="100vh" overflow="auto">
           <Box flex="1" p={3}>
             <Box px={10}>
               <Heading paddingBottom={5}>{block.name} - {block.description}</Heading>
             </Box>
-            <Box>
+            <Box overflow="auto">
               <Outlet />
             </Box>
           </Box>
-          <Box flexShrink={0} flexBasis={{ base: '100%', md: '450px' }} marginLeft={{ base: 0, md: 30 }}>
+          <Box flexShrink={0} flexBasis={{ base: '100%', md: '450px' }} marginLeft={{ base: 0, md: 30 }} overflow="auto">
             {lessons?.docs.map((lesson) => (
-              <Link key={lesson.id} href={`/blocks/${id}/lessons/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
+              <Link key={lesson.id} href={`/block/${id}/lesson/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
                 <Box display={'flex'} flexDirection={'row'} marginTop={3} marginBottom={3}>
                   <IconButton
                     size="sm"
@@ -68,6 +81,18 @@ const BlockPage = () => {
                 <Divider />
               </Link>
             ))}
+            {isLastLesson && (
+                <Link href={`/block/${id}/quest`}>
+                  <Button colorScheme="orange" mt={4}>
+                    Finalize
+                  </Button>
+                </Link>
+              )}
+            {(!isLastLesson) && (
+                <Button colorScheme="gray" onClick={handleGrayButtonClick} mt={4}>
+                  Finalize
+                </Button>
+              )}
           </Box>
         </Flex>
       </Template>
