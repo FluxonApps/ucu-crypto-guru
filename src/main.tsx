@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import './index.css';
 
+
 // Configure chains and providers
 // const { provider, webSocketProvider } = configureChains([mainnet], [publicProvider()]);
 
@@ -21,11 +22,11 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/* <WagmiConfig client={client}> */}
-    <ChakraProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ChakraProvider>
+      <ChakraProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ChakraProvider>
     {/* </WagmiConfig> */}
   </React.StrictMode>,
 );
