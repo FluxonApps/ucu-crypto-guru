@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Button } from '@chakra-ui/react';
+import { Text, Button, Spinner, Box } from '@chakra-ui/react';
 import { Link, useParams } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 const db = getFirestore();
 
@@ -11,6 +11,7 @@ const CongratsBlock: React.FC = () => {
   const [user] = useAuthState(getAuth());
   const { id } = useParams<{ id: string }>();
   const [score, setScore] = useState<number | null>(null);
+  const [totalQuestions, setTotalQuestions] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchScore = async () => {
@@ -24,14 +25,24 @@ const CongratsBlock: React.FC = () => {
       }
     };
 
+    const fetchTotalQuestions = async () => {
+      const questionsCollection = collection(db, 'blocks', id, 'test');
+      const questionsSnapshot = await getDocs(questionsCollection);
+      setTotalQuestions(questionsSnapshot.size);
+    };
+
     fetchScore();
+    fetchTotalQuestions();
   }, [user, id]);
 
-  if (score === null) {
-    return <div>Loading...</div>;
+  if (score === null || totalQuestions === null) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" />
+      </Box>
+    );
   }
 
-  const totalQuestions = 100; // This should be dynamically set based on your actual total questions
   const correct = Math.round((score / 100) * totalQuestions);
   const incorrect = totalQuestions - correct;
 
@@ -91,24 +102,24 @@ const CongratsBlock: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <Text fontSize="md" mb={4} fontWeight={'semibold'}>
-        Congratulations! You've completed the block quiz!
+      <Text fontSize="larger" mb={4} my={6} fontWeight={'semibold'}>
+        Congratulations! <br></br> You've completed the block quiz!
       </Text>
-      <Text fontWeight={'semibold'}>Your score:</Text>
+      <Text fontWeight={'semibold'} fontSize="large" mb={10}>Your score:</Text>
       <div style={scoreBarStyle}>
         <div style={scoreFillStyle}>
           <span style={scorePercentageStyle}>{score}%</span>
         </div>
       </div>
       <div style={answersSummaryStyle}>
-        <Text fontWeight={'semibold'}>
+        <Text fontWeight={'semibold'} fontSize="large">
           Correct: <span style={correctStyle}>{correct}</span>
         </Text>
-        <Text fontWeight={'semibold'}>
+        <Text fontWeight={'semibold'} fontSize="large">
           Incorrect: <span style={incorrectStyle}>{incorrect}</span>
         </Text>
       </div>
-      <Button as={Link} to="/main/blocks" colorScheme="orange" mt={4}>
+      <Button as={Link} to="/main/blocks" colorScheme="orange" mt={4} my = {20}>
         Back to blocks
       </Button>
     </div>

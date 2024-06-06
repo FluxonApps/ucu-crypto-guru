@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Radio, RadioGroup, Stack, Text, useToast } from '@chakra-ui/react';
 import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ const QuestionBlock: React.FC = () => {
   const [percentage, setPercentage] = useState<number | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
+  const topRef = useRef<HTMLDivElement>(null); // Create a ref for the top of the component
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -75,7 +76,6 @@ const QuestionBlock: React.FC = () => {
       duration: 5000,
       isClosable: true,
     });
-
     // Redirect to the stats page after the toast
     setTimeout(() => {
       navigate('/block/' + id + '/stats');
@@ -84,6 +84,7 @@ const QuestionBlock: React.FC = () => {
 
   return (
     <>
+      <Box ref={topRef}></Box> {/* Add a reference to the top of the component */}
       <Text fontFamily="Helvetica" fontSize={22} fontWeight="bold" mx={8} my={5}>
         Quiz
       </Text>

@@ -1,4 +1,4 @@
-import { Divider, Box, Button, Spinner, Text, Flex, Heading } from '@chakra-ui/react';
+import { Divider, Box, Button, Spinner, Text, Flex, Heading, Icon } from '@chakra-ui/react';
 import { doc, getDoc, getFirestore, query, CollectionReference, collection, orderBy } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -6,20 +6,25 @@ import { useParams, Outlet, useNavigate } from 'react-router-dom';
 import Template from '../components/layout/Template.tsx';
 import { Link, IconButton } from '@chakra-ui/react';
 import { BsShareFill } from "react-icons/bs";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 const db = getFirestore();
 
 const BlockPage = () => {
   const { id, lesson_id } = useParams<{ id: string, lesson_id?: string }>();
   const [block, setBlock] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [isLastLesson, setIsLastLesson] = useState(false);
+  const [isLessonSelected, setIsLessonSelected] = useState(!!lesson_id);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlock = async () => {
+      setLoading(true);
       const docRef = doc(db, "blocks", id);
       const docSnap = await getDoc(docRef);
       setBlock(docSnap.data());
+      setLoading(false);
     };
 
     fetchBlock();
@@ -41,12 +46,16 @@ const BlockPage = () => {
     window.alert('Please, finish all lessons before proceeding to the test!');
   };
 
-  if (!block) {
+  useEffect(() => {
+    setIsLessonSelected(!!lesson_id);
+  }, [lesson_id]);
+
+  if (loading || !block) {
     return (
       <Template>
-        <Box p={6}>
-          <Text fontFamily={'Helvetica'} fontSize={22} fontWeight='bold'>No block data found</Text>
-        </Box>
+        <Flex alignItems="center" justifyContent="center" height="100vh">
+          <Spinner size="xl" />
+        </Flex>
       </Template>
     );
   } else {
@@ -57,7 +66,15 @@ const BlockPage = () => {
             <Box px={20}>
               <Heading paddingBottom={5}>{block.name} - {block.description}</Heading>
             </Box>
+            {isLessonSelected ? (
               <Outlet />
+            ) : (
+              <Flex align="center" justify="center" height="50%">
+                <Text fontSize="2xl" textAlign="center">
+                  Please, select a lesson from the list.
+                </Text>
+              </Flex>
+            )}
           </Box>
           <Box marginLeft={{ base: 0, md: 30 }} width={400} display={'flex'} flexDirection={'column'}>
             <Heading>Lessons</Heading>
@@ -65,7 +82,6 @@ const BlockPage = () => {
                 overflow="auto" p={6} 
                 maxW="container.md" mx="auto" 
                 height="50svh"
-
                 css={{
                   '&::-webkit-scrollbar': {
                     width: '8px',
@@ -82,7 +98,6 @@ const BlockPage = () => {
                   'scrollbar-width': 'thin',
                   'scrollbar-color': '#EEA58B #F3F3F3',
                 }}
-                // backgroundColor='Yellow'
                 >
               {lessons?.docs.map((lesson) => (
                 <Link key={lesson.id} href={`/block/${id}/lesson/${lesson.id}`} textDecoration={'none'} _hover={{ bg: 'white', color: 'black' }}>
@@ -101,9 +116,6 @@ const BlockPage = () => {
                       <Heading size="md" overflowWrap="break-word" whiteSpace="normal">
                         {lesson.data().title}
                       </Heading>
-                      <Text size="sm" color="gray" overflowWrap="break-word" whiteSpace="normal">
-                        a bit of text
-                      </Text>
                     </Box>
                   </Box>
                 <Divider />

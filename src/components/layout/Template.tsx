@@ -66,22 +66,7 @@ const Template: FC<any> = ({ children }) => (
               '-ms-overflow-style': 'none',  // for Internet Explorer and Edge
               'scrollbar-width': 'none',     // for Firefox
             }}>
-        <Box display="flex" justifyContent="center" mb="8">
-          <InputGroup width="50vw">
-            <InputLeftElement pointerEvents="none" height="50px">
-              <SearchIcon height="50px" w="20px" color="gray.500" />
-            </InputLeftElement>
-            <Input
-              placeholder="Search..."
-              bg="#F6F6F5"
-              color="black"
-              rounded="10"
-              h="50px"
-              fontSize="20px"
-            />
-          </InputGroup>
-        </Box>
-        <Box>
+        <Box mt={10}>
           {children}
         </Box>
       </Box>
