@@ -7,7 +7,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import './index.css';
 
-// // Configure chains and providers
+
+// Configure chains and providers
 // const { provider, webSocketProvider } = configureChains([mainnet], [publicProvider()]);
 
 // // Create Wagmi client
