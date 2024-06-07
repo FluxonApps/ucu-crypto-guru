@@ -1,13 +1,14 @@
 import { SearchIcon } from '@chakra-ui/icons';
 import {getAuth, signOut } from "firebase/auth";
-import { Box, Image, Input, InputGroup, InputLeftElement, Text, IconButton } from '@chakra-ui/react';
+import { Box, Image, Input, InputGroup, InputLeftElement, Text, IconButton, Button } from '@chakra-ui/react';
 import { BsPersonFill } from "react-icons/bs";
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/main/token.png';
 import blocksImage from '../../assets/main/blocks.png';
 import statsImage from '../../assets/main/stats.png';
 import { FC } from 'react';
-
+import { BsPerson } from "react-icons/bs";
+import { CiLogout } from "react-icons/ci";
 
 
 
@@ -17,9 +18,7 @@ const Template: FC<any> = ({ children }) => {
   console.log(auth);
     const logout = () => { signOut(auth).then(() => {
       navigation('/');
-    }).catch((error) => {
-      // An error happened.
-    });
+    }).catch((error) => {});
   }
 
   return  (<Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="100vh" >
@@ -71,7 +70,15 @@ const Template: FC<any> = ({ children }) => {
             </Box>
           </Link>
           
-          <IconButton aria-label='logout' onClick={logout} icon={<BsPersonFill />} />
+          <Button display="flex"
+              cursor="pointer"
+              padding="20px"
+              ml="2"
+              variant='ghost'
+              color={'white'}
+              _hover={{ bg: 'rgba(255, 255, 255, 0.1)', borderRadius: '10px', transition: '0.5s ease', height: '60px'  }}onClick={logout}>
+              <CiLogout size="30px"/>
+          </Button>
 
         </Box>
       </Box>
