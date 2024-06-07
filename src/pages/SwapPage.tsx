@@ -96,10 +96,9 @@ const SwapPage = () => {
   function performSwap() {}
 
   async function fetchPrices(one, two) {
-    const res = await axios.get(`http://localhost:3001/tokenPrice`, {
+    const res = await axios.get(`http://52.59.246.61:3001/tokenPrice`, {
       params: { addressOne: one, addressTwo: two },
     });
-
     console.log(res.data);
     setPrices(res.data);
   }
@@ -209,7 +208,14 @@ const SwapPage = () => {
               })}
             </Box>
           </Modal>
-          <Box bg="#e8a7e7" p="20px" w={{ base: '60vh' }} h="50vh" rounded="30" border="4px solid purple">
+          <Box
+            bg="#e8a7e7"
+            p="20px"
+            w={{ base: '400px', lg: '700px' }}
+            h="450px"
+            rounded="30"
+            border="4px solid purple"
+          >
             <Box className="tradeBoxHeader" display="flex" alignItems="end">
               <Text mt="20px" ml="20px" fontSize="30px" color="white" fontWeight="bold">
                 Swap your tokens
@@ -304,7 +310,7 @@ const SwapPage = () => {
                   </InputRightElement>
                 </InputGroup>
               </Box>
-              <Box width="100%" display="flex" position="absolute" justifyContent="center" mt="6.4vh" pr="40px">
+              <Box width="100%" display="flex" position="absolute" justifyContent="center" mt="63px" pr="40px">
                 <Box
                   border="2px solid purple"
                   boxSize="40px"
