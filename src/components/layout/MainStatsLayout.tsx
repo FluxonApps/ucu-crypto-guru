@@ -4,6 +4,7 @@ import { Link, Outlet } from 'react-router-dom';
 import logoImage from '../../assets/main/token.png';
 import blocksImage from '../../assets/main/blocks.png';
 import statsImage from '../../assets/main/stats.png';
+import swapIcon from '../../assets/main/swap.svg';
 
 const MainStatsLayout = () => {
   return (
@@ -55,29 +56,25 @@ const MainStatsLayout = () => {
               </Text>
             </Box>
           </Link>
+
+          <Link to="/main/swap">
+            <Box
+              display="flex"
+              cursor="pointer"
+              padding="20px"
+              ml="2"
+              _hover={{ bg: 'rgba(255, 255, 255, 0.1)', borderRadius: '10px', transition: '0.5s ease' }}
+            >
+              <Image src={swapIcon} mr="10px" width="30px" height="30px" color></Image>
+              <Text display="inline-block" fontSize="20px">
+                Swap
+              </Text>
+            </Box>
+          </Link>
         </Box>
       </Box>
 
       <Box background="#ffffff" height="85vh" p="10" rounded="40" maxWidth="1500px" margin="0 auto">
-        <Box display="flex" justifyContent="center">
-          <InputGroup width="100" display="flex" alignItems="center">
-            <InputLeftElement pointerEvents="none" height="50px">
-              <SearchIcon height="50px" w="20px" color="gray.500" />
-            </InputLeftElement>
-
-            <Input
-              placeholder="Search..."
-              bg="#F6F6F5"
-              color="black"
-              mb="8"
-              width="50vw"
-              rounded="10"
-              h="50px"
-              fontSize="20px"
-            />
-          </InputGroup>
-        </Box>
-
         <Outlet />
       </Box>
     </Box>

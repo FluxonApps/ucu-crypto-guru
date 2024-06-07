@@ -1,6 +1,6 @@
 import { Box, Divider, Progress, Text } from '@chakra-ui/react';
 import { getAuth } from 'firebase/auth';
-import { collection, CollectionReference, doc, getDoc, query } from 'firebase/firestore';
+import { collection, CollectionReference, doc, getDoc, orderBy, query } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { db } from '../../firebase.config';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -12,6 +12,7 @@ const StatsPage = () => {
   const [user] = useAuthState(auth);
   const usersCollectionRef = collection(db, 'users');
   const [userData, setUserData] = useState(null);
+  const allScores = [];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,7 +29,23 @@ const StatsPage = () => {
     };
 
     fetchUserData();
-  }, [user?.uid]);
+  }, [user]);
+
+  interface Block {
+    id: string;
+    name: string;
+    description: string;
+    minutes: number;
+    imgUrl: string;
+    lessons: object;
+    tests: object;
+    order: number;
+  }
+
+  const blocksCollectionRef = collection(db, 'blocks');
+  const [blocks, blcoksLoading, blocksError] = useCollection(
+    query(blocksCollectionRef, orderBy('order')) as CollectionReference<Block>,
+  );
 
   if (userData) {
     return (
@@ -36,27 +53,38 @@ const StatsPage = () => {
         <Text fontSize="3xl" mb="4" color="black" fontWeight="bold">
           Full Statistics
         </Text>
-        {userData.testScores.map((element, index) => {
-          return (
-            <Box padding="20px" border="1px solid #E2E8F0" borderRadius="md" boxShadow="sm">
-              <Text fontSize="lg" fontWeight="bold" color="orange.500">
-                Test {index + 1}
-              </Text>
-              <Text fontSize="lg" marginTop="10px" fontWeight="500">
-                Your score:
-              </Text>
-              <Progress value={element} size="lg" colorScheme="green" borderRadius="md" marginTop="10px" />
-              <Text fontSize="lg" marginTop="10px" textAlign="right">
-                {element}%
-              </Text>
-            </Box>
-          );
+        {Object.keys(userData.testScores).map((element, index) => {
+          console.log(userData.testScores[element]);
+          if (userData.testScores[element] !== undefined) {
+            console.log(element);
+            allScores.push(userData.testScores[element]);
+            return (
+              <Box padding="20px" border="1px solid #E2E8F0" borderRadius="md" boxShadow="sm">
+                <Text fontSize="lg" fontWeight="bold" color="orange.500">
+                  Test {index + 1}
+                </Text>
+                <Text fontSize="lg" marginTop="10px" fontWeight="500">
+                  Your score:
+                </Text>
+                <Progress
+                  value={userData.testScores[element]}
+                  size="lg"
+                  colorScheme="green"
+                  borderRadius="md"
+                  marginTop="10px"
+                />
+                <Text fontSize="lg" marginTop="10px" textAlign="right">
+                  {userData.testScores[element]}%
+                </Text>
+              </Box>
+            );
+          }
         })}
         <Divider my="20px" border="2px solid grey" />
         <Text fontSize="20px" fontWeight="bold" display="flex" gap="10px" alignItems="center">
           Average Score:
           <Text color="orange.500" fontSize="30px" mt="-3px">
-            {Math.round(userData.testScores.reduce((a, b) => a + b, 0) / userData.testScores.length)}
+            {Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)}%{' '}
           </Text>
         </Text>
       </Box>
