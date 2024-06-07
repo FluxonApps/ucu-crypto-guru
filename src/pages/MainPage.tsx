@@ -1,4 +1,5 @@
-import { Box, Text, SimpleGrid, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
+
+import { Box, Text, SimpleGrid, Container, InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { collection, CollectionReference, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -17,7 +18,7 @@ const MainPage: React.FC = () => {
     tests: object;
     order: number;
   }
-
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBlocks, setFilteredBlocks] = useState<Block[]>([]);
 
