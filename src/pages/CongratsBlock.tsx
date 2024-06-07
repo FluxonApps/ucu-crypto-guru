@@ -19,8 +19,10 @@ const CongratsBlock: React.FC = () => {
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
         const userData = userDoc.data();
-        if (userData && userData.testScores && userData.testScores[id]) {
+        if (userData && userData.testScores && userData.testScores[id] !== undefined) {
           setScore(userData.testScores[id]);
+        } else {
+          setScore(0);
         }
       }
     };

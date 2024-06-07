@@ -126,23 +126,19 @@ const BlockPage = () => {
               </Link>
             ))}
             </Box>
-            {block.videoURL && (
-              <>
-                {isLastLesson ? (
-                  <Link href={`/block/${id}/quest`}>
-                    <Button colorScheme="orange" mt={4}>
-                      Finalize
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link>
-                    <Button colorScheme="gray" onClick={handleGrayButtonClick} mt={4}>
-                      Finalize
-                    </Button>
-                  </Link>
-                )}
-              </>
-            )}
+              {isLastLesson ? (
+                <Link href={`/block/${id}/quest`}>
+                  <Button colorScheme="orange" mt={4}>
+                    Finalize
+                  </Button>
+                </Link>
+              ) : (
+                <Link>
+                  <Button colorScheme="gray" onClick={handleGrayButtonClick} mt={4}>
+                    Finalize
+                  </Button>
+                </Link>
+              )}
           </Box>
         </Flex>
       </Template>
