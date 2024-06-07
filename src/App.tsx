@@ -10,6 +10,7 @@ import BlockPage from './pages/BlockPage.tsx';
 import LessonBlock from './pages/LessonBlock.tsx';
 import QuestionBlock from './pages/QuestionBlock.tsx';
 import SwapPage from './pages/SwapPage.tsx';
+import CongratsBlock from './pages/CongratsBlock.tsx';
 
 export const App = () => {
   return (
@@ -25,6 +26,7 @@ export const App = () => {
       <Route path="/block/:id" element={<BlockPage />}>
         <Route path="lesson/:lesson_id" element={<LessonBlock />} />
         <Route path="quest" element={<QuestionBlock />} />
+        <Route path='stats' element={<CongratsBlock />} />
       </Route>
     </Routes>
   );

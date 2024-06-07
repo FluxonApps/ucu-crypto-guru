@@ -12,6 +12,10 @@ const StatsPage = () => {
   const [user] = useAuthState(auth);
   const usersCollectionRef = collection(db, 'users');
   const [userData, setUserData] = useState(null);
+  const blocksCollectionRef = collection(db, 'blocks');
+  const [blocks, blcoksLoading, blocksError] = useCollection(
+    query(blocksCollectionRef, orderBy('order')) as CollectionReference<Block>,
+  );
   const allScores = [];
 
   useEffect(() => {
@@ -31,23 +35,18 @@ const StatsPage = () => {
     fetchUserData();
   }, [user]);
 
-  interface Block {
-    id: string;
-    name: string;
-    description: string;
-    minutes: number;
-    imgUrl: string;
-    lessons: object;
-    tests: object;
-    order: number;
-  }
-
-  const blocksCollectionRef = collection(db, 'blocks');
-  const [blocks, blcoksLoading, blocksError] = useCollection(
-    query(blocksCollectionRef, orderBy('order')) as CollectionReference<Block>,
-  );
-
   if (userData) {
+    console.log(Object.keys(userData.testScores));
+    if (!Object.keys(userData.testScores)) {
+      console.log(1);
+      return (
+        <Box display="flex" alignItems="center" justifyContent="center" height="10%">
+          <Text color="black" fontSize="30px" fontWeight="bold">
+            No tests passed
+          </Text>
+        </Box>
+      );
+    }
     return (
       <Box color="black">
         <Text fontSize="3xl" mb="4" color="black" fontWeight="bold">
@@ -84,7 +83,7 @@ const StatsPage = () => {
         <Text fontSize="20px" fontWeight="bold" display="flex" gap="10px" alignItems="center">
           Average Score:
           <Text color="orange.500" fontSize="30px" mt="-3px">
-            {Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)}%{' '}
+            {Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)}%
           </Text>
         </Text>
       </Box>

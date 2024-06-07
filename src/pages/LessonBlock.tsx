@@ -76,41 +76,45 @@ const LessonBlock = () => {
     <>
       <Flex direction="column" align="center" p={6}>
         <Box width="80%" maxW="600px">
-          <AspectRatio ratio={16 / 9} mb={4}>
-            <iframe
-              title='Lesson Video'
-              src={lesson.videoURL}
-              allowFullScreen
-            />
-          </AspectRatio>
-          <Box display="flex" justifyContent="flex-end" mb={4}>
-            <IconButton
-              size="sm"
-              colorScheme='orange'
-              aria-label='Like'
-              icon={<BsFillHandThumbsUpFill />}
-              mr={2}
-              _hover={{ bg: 'white', color: 'black' }}
-              transition="background-color 0.1s ease, color 0.1s ease"
-            />
-            <IconButton
-              size="sm"
-              colorScheme='orange'
-              aria-label='Dislike'
-              icon={<BsFillHandThumbsDownFill />}
-              mr={2}
-              _hover={{ bg: 'white', color: 'black' }}
-              transition="background-color 0.1s ease, color 0.1s ease"
-            />
-            <IconButton
-              size="sm"
-              colorScheme='orange'
-              aria-label='Share'
-              icon={<BsShareFill />}
-              _hover={{ bg: 'white', color: 'black' }}
-              transition="background-color 0.1s ease, color 0.1s ease"
-            />
-          </Box>
+          {lesson.videoURL && (
+            <>
+              <AspectRatio ratio={16 / 9} mb={4}>
+                <iframe
+                  title='Lesson Video'
+                  src={lesson.videoURL}
+                  allowFullScreen
+                />
+              </AspectRatio>
+              <Box display="flex" justifyContent="flex-end" mb={4}>
+                <IconButton
+                  size="sm"
+                  colorScheme='orange'
+                  aria-label='Like'
+                  icon={<BsFillHandThumbsUpFill />}
+                  mr={2}
+                  _hover={{ bg: 'white', color: 'black' }}
+                  transition="background-color 0.1s ease, color 0.1s ease"
+                />
+                <IconButton
+                  size="sm"
+                  colorScheme='orange'
+                  aria-label='Dislike'
+                  icon={<BsFillHandThumbsDownFill />}
+                  mr={2}
+                  _hover={{ bg: 'white', color: 'black' }}
+                  transition="background-color 0.1s ease, color 0.1s ease"
+                />
+                <IconButton
+                  size="sm"
+                  colorScheme='orange'
+                  aria-label='Share'
+                  icon={<BsShareFill />}
+                  _hover={{ bg: 'white', color: 'black' }}
+                  transition="background-color 0.1s ease, color 0.1s ease"
+                />
+              </Box>
+            </>
+          )}
           <Heading as="h2" size="lg" mb={2}>
             {lesson.title}
           </Heading>
@@ -118,7 +122,7 @@ const LessonBlock = () => {
             {lesson.description}
           </Text>
           <br></br>
-          <div dangerouslySetInnerHTML={{__html: lesson.text}} />
+          <div dangerouslySetInnerHTML={{ __html: lesson.text }} />
         </Box>
       </Flex>
     </>

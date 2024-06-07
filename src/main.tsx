@@ -7,8 +7,8 @@ import { App } from './App';
 import './index.css';
 import { WagmiProvider } from 'wagmi';
 import { config } from '../wagmi.config';
-
 const queryClient = new QueryClient();
+
 
 // Render the application
 ReactDOM.createRoot(document.getElementById('root')!).render(
