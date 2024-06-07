@@ -2,7 +2,7 @@ import { Divider, Box, Button, Spinner, Text, Flex, Heading, Icon } from '@chakr
 import { doc, getDoc, getFirestore, query, CollectionReference, collection, orderBy } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Template from '../components/layout/Template.tsx';
 import { Link, IconButton } from '@chakra-ui/react';
 import { BsShareFill } from "react-icons/bs";
@@ -12,6 +12,7 @@ const db = getFirestore();
 
 const BlockPage = () => {
   const { id, lesson_id } = useParams<{ id: string, lesson_id?: string }>();
+  const location = useLocation();
   const [block, setBlock] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isLastLesson, setIsLastLesson] = useState(false);
@@ -50,6 +51,9 @@ const BlockPage = () => {
     setIsLessonSelected(!!lesson_id);
   }, [lesson_id]);
 
+  const isQuestPath = location.pathname.includes('/quest');
+  const isStatsPath = location.pathname.includes('/stats');
+
   if (loading || !block) {
     return (
       <Template>
@@ -66,14 +70,14 @@ const BlockPage = () => {
             <Box px={20}>
               <Heading paddingBottom={5}>{block.name} - {block.description}</Heading>
             </Box>
-            {isLessonSelected ? (
-              <Outlet />
-            ) : (
+            {(!lesson_id && !isQuestPath && !isStatsPath) ? (
               <Flex align="center" justify="center" height="50%">
                 <Text fontSize="2xl" textAlign="center">
                   Please, select a lesson from the list.
                 </Text>
               </Flex>
+            ) : (
+              <Outlet />
             )}
           </Box>
           <Box marginLeft={{ base: 0, md: 30 }} width={400} display={'flex'} flexDirection={'column'}>
@@ -122,20 +126,23 @@ const BlockPage = () => {
               </Link>
             ))}
             </Box>
-            {isLastLesson && (
-                <Link href={`/block/${id}/quest`}>
-                  <Button colorScheme="orange" mt={4}>
-                    Finalize
-                  </Button>
-                </Link>
-              )}
-            {(!isLastLesson) && (
-                <Link>
-                  <Button colorScheme="gray" onClick={handleGrayButtonClick} mt={4}>
-                    Finalize
-                  </Button>
-                </Link>
-              )}
+            {block.videoURL && (
+              <>
+                {isLastLesson ? (
+                  <Link href={`/block/${id}/quest`}>
+                    <Button colorScheme="orange" mt={4}>
+                      Finalize
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link>
+                    <Button colorScheme="gray" onClick={handleGrayButtonClick} mt={4}>
+                      Finalize
+                    </Button>
+                  </Link>
+                )}
+              </>
+            )}
           </Box>
         </Flex>
       </Template>
