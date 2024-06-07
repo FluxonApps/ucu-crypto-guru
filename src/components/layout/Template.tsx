@@ -7,7 +7,7 @@ import statsImage from '../../assets/main/stats.png';
 import { FC } from 'react';
 
 const Template: FC<any> = ({ children }) => (
-  <Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="vh" overflow="auto">
+  <Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="100vh" >
     <Box padding="4" maxWidth="1450px" margin="0 auto">
       <Box
         display="flex"
@@ -16,6 +16,8 @@ const Template: FC<any> = ({ children }) => (
         mx="10"
         my="20px"
         color="white"
+        overflow={'auto'}
+        
       >
         <Box fontSize="2xl" fontWeight="bold">
           <Box alignItems="center" justifyContent="center" display="flex">
@@ -56,23 +58,15 @@ const Template: FC<any> = ({ children }) => (
         </Box>
       </Box>
 
-      <Box bgColor="white" p="10" rounded="40" minH="80vh" overflowY="auto">
-        <Box display="flex" justifyContent="center" mb="8">
-          <InputGroup width="50vw">
-            <InputLeftElement pointerEvents="none" height="50px">
-              <SearchIcon height="50px" w="20px" color="gray.500" />
-            </InputLeftElement>
-            <Input
-              placeholder="Search..."
-              bg="#F6F6F5"
-              color="black"
-              rounded="10"
-              h="50px"
-              fontSize="20px"
-            />
-          </InputGroup>
-        </Box>
-        <Box>
+      <Box bgColor="white" p="10" rounded="40" minH="80vh" overflowY="auto" height={'55vh'}
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              '-ms-overflow-style': 'none',  // for Internet Explorer and Edge
+              'scrollbar-width': 'none',     // for Firefox
+            }}>
+        <Box mt={10}>
           {children}
         </Box>
       </Box>
