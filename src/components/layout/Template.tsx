@@ -1,13 +1,28 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Box, Image, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
-import { Link, Outlet } from 'react-router-dom';
+import {getAuth, signOut } from "firebase/auth";
+import { Box, Image, Input, InputGroup, InputLeftElement, Text, IconButton } from '@chakra-ui/react';
+import { BsPersonFill } from "react-icons/bs";
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/main/token.png';
 import blocksImage from '../../assets/main/blocks.png';
 import statsImage from '../../assets/main/stats.png';
 import { FC } from 'react';
 
-const Template: FC<any> = ({ children }) => (
-  <Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="100vh" >
+
+
+
+const Template: FC<any> = ({ children }) => {
+  const navigation = useNavigate()
+  const auth = getAuth();
+  console.log(auth);
+    const logout = () => { signOut(auth).then(() => {
+      navigation('/');
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
+  return  (<Box bg="linear-gradient(90deg, rgba(13,10,52,1) 0%, rgba(65,14,69,1) 100%)" minH="100vh" >
     <Box padding="4" maxWidth="1450px" margin="0 auto">
       <Box
         display="flex"
@@ -55,6 +70,9 @@ const Template: FC<any> = ({ children }) => (
               </Text>
             </Box>
           </Link>
+          
+          <IconButton aria-label='logout' onClick={logout} icon={<BsPersonFill />} />
+
         </Box>
       </Box>
 
@@ -71,7 +89,7 @@ const Template: FC<any> = ({ children }) => (
         </Box>
       </Box>
     </Box>
-  </Box>
-);
+  </Box>)
+};
 
 export default Template;
